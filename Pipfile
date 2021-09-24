@@ -10,3 +10,14 @@ autopep8 = "*"
 
 [requires]
 python_version = "3.8"
+APScheduler=3.6.3
+backports.zoneinfo=0.2.1
+cachetools=4.2.2
+certifi=2021.5.30
+pycodestyle=2.7.0
+python-telegram-bot=13.7
+pytz=2021.1
+six=1.16.0
+toml=0.10.2
+tornado=6.1
+tzlocal=3.0
