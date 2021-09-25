@@ -34,7 +34,6 @@ def error(bot, update, error):
     logger.warn('Update "%s" caused error "%s"' % (update, error))
 
 
-
 TOKEN = os.environ["TOKEN"]
 
 updater = Updater(token=TOKEN)
@@ -43,7 +42,7 @@ dispatcher = updater.dispatcher
 
 def start(update, context):
     context.bot.sendChatAction(chat_id=update.effective_chat.id,
-                       action=ChatAction.TYPING)
+                               action=ChatAction.TYPING)
     context.bot.sendMessage(chat_id=update.effective_chat.id, text="""Type your code...\n
 Note that python language is case sensitive!\n
 Try these commands:
@@ -54,19 +53,17 @@ Try these commands:
 or any desired code!""")
 
 
-def execute(update, context, direct=True):
+def execute(update, context):
 
     try:
-        user_id = update.message.from_user.id
         code = update.message.text
         inline = False
     except AttributeError:
         # Using inline
-        user_id = update.inline_query.from_user.id
-        code = update.inline_query.query
+        code = update
         inline = True
 
-    flag = True;
+    flag = True
     with stdoutIO() as screen:
         try:
             exec(code)
@@ -84,12 +81,12 @@ def execute(update, context, direct=True):
         output = '>>> Error\n'
     if not inline:
         context.bot.sendChatAction(chat_id=update.effective_chat.id,
-                               action=ChatAction.TYPING)
+                                   action=ChatAction.TYPING)
     output += '\n' + result
 
     if not inline:
         context.bot.sendMessage(chat_id=update.effective_chat.id,
-                            text=output)
+                                text=output)
         return False
 
     if inline:
@@ -98,7 +95,7 @@ def execute(update, context, direct=True):
 
 def inlinequery(update, context):
     query = update.inline_query.query
-    o = execute(query, context, direct=False)
+    o = execute(query, context)
     results = list()
 
     results.append(InlineQueryResultArticle(id=uuid4(),
@@ -107,8 +104,8 @@ def inlinequery(update, context):
                                             input_message_content=InputTextMessageContent(
                                                 '*{0}*\n\n{1}'.format(query, o))))
 
-    context.bot.answerInlineQuery(context.inline_query.id,
-                          results=results, cache_time=10)
+    context.bot.answerInlineQuery(update.inline_query.id,
+                                  results=results, cache_time=10)
 
 
 start_handler = CommandHandler('start', start)
