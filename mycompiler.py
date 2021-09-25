@@ -54,7 +54,7 @@ Try these commands:
 or any desired code!""")
 
 
-def execute(update, context, direct=True):
+def execute(update, context):
 
     try:
         user_id = update.message.from_user.id
@@ -63,7 +63,7 @@ def execute(update, context, direct=True):
     except AttributeError:
         # Using inline
         user_id = update.inline_query.from_user.id
-        code = update.inline_query.query
+        code = update
         inline = True
 
     flag = True;
@@ -98,7 +98,7 @@ def execute(update, context, direct=True):
 
 def inlinequery(update, context):
     query = update.inline_query.query
-    o = execute(query, context, direct=False)
+    o = execute(query, context)
     results = list()
 
     results.append(InlineQueryResultArticle(id=uuid4(),
