@@ -104,7 +104,7 @@ def inlinequery(update, context):
                                             input_message_content=InputTextMessageContent(
                                                 '*{0}*\n\n{1}'.format(query, o))))
 
-    context.bot.answerInlineQuery(context.inline_query.id,
+    context.bot.answerInlineQuery(update.inline_query.id,
                                   results=results, cache_time=10)
 
 
